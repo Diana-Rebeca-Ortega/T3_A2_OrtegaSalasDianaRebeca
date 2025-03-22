@@ -12,6 +12,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
 
@@ -22,7 +23,7 @@ class VentanaInicio extends JFrame{
 
 	public VentanaInicio() {
 		getContentPane().setBackground(new Color (213, 229, 213) );
-		setSize(400, 320);
+		setSize(430, 320);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setVisible(true);
 		setTitle("Análisis de datos en Twitter");
@@ -38,18 +39,33 @@ class VentanaInicio extends JFrame{
 		txtNO.setBounds(275,0,200,15);
 		add(txtNO);
 
+		
+		
+
 		cajaSI = new JTextArea();
 		cajaSI.setBackground(new Color (199, 217, 221));
 		cajaSI.setBounds(0,25,200,100);
 		add(cajaSI);
+		
+		JScrollPane scrooll1= new JScrollPane(cajaSI);
+		scrooll1.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+		scrooll1.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+		scrooll1.setBounds(0,25,200,100);
+		getContentPane().add(scrooll1);
 
 		cajaNO = new JTextArea();
 		cajaNO.setBackground(new Color (199, 217, 221));
-		cajaNO.setBounds(200,25,200,100);
+		
 		add(cajaNO);
 
+		JScrollPane scrooll2= new JScrollPane(cajaNO);
+		scrooll2.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+		scrooll2.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+		scrooll2.setBounds(200,25,200,100);
+		getContentPane().add(scrooll2);
+		
 
-		for(int i=0; i< 10; i++) {
+		for(int i=0; i< 1000; i++) {
 			int random= rm.nextInt(2);
 			if(random ==0) {
 				datos.add("Dato NO."+(i+1)+": NO");
@@ -109,7 +125,7 @@ class HiloHistograma extends  Thread{
 		
 		//Esta parte hace que el agua suba de volumen en 5 segundos con el Thread sleep/***************************
 		try {
-	        Thread.sleep(10);
+	        Thread.sleep(5);
 	    } catch (InterruptedException ex) {
 	        Thread.currentThread().interrupt();
 	    }//********************************************************************************************************
@@ -134,20 +150,23 @@ class HiloHistograma extends  Thread{
 			}
 
 			// Dibujar las barras del histograma
-			int anchoBarra = 50;
-			int altoBarra = 100;
-			int espacioEntreBarras = 20;
+			int anchoBarra = 30;
+			int altoBarra =1;//cambiar para que cambie el tamaño
+			int espacioEntreBarras = 70;
 
 			g.setColor(Color.BLUE);
 			g.fillRect(10, getHeight() - si * altoBarra / 10, anchoBarra, si * altoBarra / 10);
-			g.drawString("SI", 10, getHeight() - si * altoBarra / 10 - 10);
+			System.out.println(getHeight());//se declara en el panelHistograma.setBounds(100, 150, 200, 100);
+			System.out.println(si);
+			System.out.println(altoBarra);
+			g.drawString("SI: "+si, 10, getHeight() - si * altoBarra / 10 - 10);
 
 			g.setColor(Color.RED);
 			g.fillRect(10 + anchoBarra + espacioEntreBarras, getHeight() - no * altoBarra / 10, anchoBarra, no * altoBarra / 10);
-			g.drawString("NO", 10 + anchoBarra + espacioEntreBarras, getHeight() - no * altoBarra / 10 - 10);
+			g.drawString("NO: "+no, 10 + anchoBarra + espacioEntreBarras, getHeight() - no * altoBarra / 10 - 10);
 		}
 	};
-	panelHistograma.setBounds(100, 150, 200, 200);
+	panelHistograma.setBounds(100, 150, 200, 100);
 	v.getContentPane().add(panelHistograma);
 	v.revalidate();
 	v.repaint();
